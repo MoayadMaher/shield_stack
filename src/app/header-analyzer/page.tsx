@@ -4,14 +4,13 @@ import { useState } from "react";
 import analyzer from "./api/analyzer";
 
 export default function AnalyzePage() {
-  const [url, setUrl] = useState("");
+  const [url, setUrl] = useState<string>("");
   const [data, setData] = useState(null);
 
-  async function handleSubmit(event: any) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     try {
       const Data = await analyzer(url);
-      console.log(Data);
       setData(Data);
     } catch (error) {
       console.error("Failed to fetch data:", error);
