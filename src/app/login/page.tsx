@@ -1,7 +1,7 @@
 "use client";
 
 import GoogleButton from "react-google-button";
-import { signIn } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 
 export default function LoginPage() {
   return (
@@ -12,6 +12,12 @@ export default function LoginPage() {
         </h1>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
           <GoogleButton onClick={() => signIn("google")} />
+          <button
+            onClick={() => signOut()}
+            className="rounded-md bg-white px-4 py-2 text-black"
+          >
+            Back to my life
+          </button>
         </div>
       </div>
     </main>
