@@ -3,11 +3,14 @@
 import GoogleButton from "react-google-button";
 import { signIn, signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
 
 export default function LoginPage() {
-  const handleSignIn = () => {
-    signIn("google");
-    redirect("/");
+  const handleSignOut = () => {
+    signOut();
+    document.cookie = "";
+    localStorage.clear();
+    NextResponse.redirect("/");
   };
 
   return (
@@ -17,12 +20,12 @@ export default function LoginPage() {
           It’s a good choice enjoy the website and erase my number
         </h1>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-          <GoogleButton onClick={handleSignIn} />
+          <GoogleButton onClick={() => signIn("google")} />
           <button
-            onClick={() => signOut()}
+            onClick={handleSignOut}
             className="rounded-md bg-white px-4 py-2 text-black"
           >
-            Back to My live
+            Sign Out
           </button>
         </div>
       </div>
