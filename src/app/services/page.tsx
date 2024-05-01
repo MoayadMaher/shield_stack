@@ -18,7 +18,7 @@ export default function Page() {
             </Link>
             <Link
               className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-              href="/login"
+              href="services/pen-test"
             >
               <h3 className="text-2xl font-bold">Pen test →</h3>
               <div className="text-lg"></div>

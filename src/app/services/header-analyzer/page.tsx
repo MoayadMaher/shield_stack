@@ -10,8 +10,8 @@ export default function AnalyzePage() {
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     try {
-      const Data = await analyzer(url);
-      setData(Data);
+      const fetchedData = await analyzer(url);
+      setData(fetchedData);
     } catch (error) {
       console.error("Failed to fetch data:", error);
     }
