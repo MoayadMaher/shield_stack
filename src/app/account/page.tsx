@@ -1,5 +1,4 @@
 import { getServerSession } from "next-auth";
-import { useState } from "react";
 import { PrismaClient } from "@prisma/client";
 
 export default async function Page() {
@@ -11,8 +10,6 @@ export default async function Page() {
       email: session?.user?.email ?? undefined,
     },
   });
-  console.log(userInfo);
-
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
@@ -26,7 +23,7 @@ export default async function Page() {
                 <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                   <img
                     className="mx-auto h-20 w-20 rounded-full"
-                    src={userInfo?.image}
+                    src={userInfo?.image || "/user.png"}
                     alt="User profile"
                   />
                 </td>
