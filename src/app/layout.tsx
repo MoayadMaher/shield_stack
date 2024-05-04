@@ -1,6 +1,9 @@
 import "@/styles/globals.css";
 
 import { Inter } from "next/font/google";
+import { getServerSession } from "next-auth/next";
+
+import dynamic from "next/dynamic";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -13,14 +16,23 @@ export const metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const Navbar = dynamic(() => import("./components/navbar"), {
+    ssr: false,
+  });
+
+  const session = await getServerSession();
+  console.log(session);
   return (
     <html lang="en">
-      <body className={`font-sans ${inter.variable}`}>{children}</body>
+      <body className={`font-sans ${inter.variable}`}>
+        <Navbar session={session} />
+        {children}
+      </body>
     </html>
   );
 }
