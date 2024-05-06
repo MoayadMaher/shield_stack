@@ -72,7 +72,7 @@ export default function Page() {
                 checked={scanType === "dirserch"}
               />
               <label htmlFor="dirserch" className="m-1.5 p-3">
-                Dirserch
+                Dirsearch
               </label>
             </div>
           </form>

@@ -1,7 +1,6 @@
 async function apiFetch(params: string) {
   try {
     const fullUrl = `https://pen-test-production.up.railway.app${params}`;
-    console.log("API request:", fullUrl);
     const response = await fetch(fullUrl);
     if (!response.ok) {
       const errorData = await response.json();
@@ -17,14 +16,11 @@ async function apiFetch(params: string) {
 export default async function scan(target: string, scanType: string) {
   switch (scanType) {
     case "nmap":
-      return await apiFetch(`/nmap/scan?target=${target}`);
+      return await apiFetch(`/nmap/scan?url=${target}`);
     case "whois":
-      return await apiFetch(`/whois/scan?url=${target}`);
+      return await apiFetch(`/whois/lookup?url=${target}`);
     case "dirserch":
-      await fetch(
-        `https://pen-test-production.up.railway.app/dirsearch/setTarget?url=${target}`,
-      );
-      return await apiFetch(`/dirsearch/getRawResults`);
+      return await apiFetch(`/dirsearch/start?url=${target}`);
     default:
       throw new Error(`Invalid scan type: ${scanType}`);
   }
