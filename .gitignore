@@ -42,3 +42,6 @@ yarn-error.log*
 *.tsbuildinfo
 
 qodana.yaml
+
+get_code_context.sh
+code_context.txt
