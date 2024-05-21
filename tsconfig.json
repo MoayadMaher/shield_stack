@@ -27,7 +27,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@/config/*": ["./config"]
+      "@/config/*": ["./config"],
+      "@/components/*": ["./src/app/components/*"]
     }
   },
   "include": [
