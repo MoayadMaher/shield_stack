@@ -27,13 +27,15 @@ export default function AuthenticationPage() {
         <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
           <div className="absolute inset-0 bg-black" />
           <div className="relative z-20 flex items-center text-3xl font-medium">
-            <Image
-              src="/favicon.ico"
-              alt="Logo"
-              width={70}
-              height={70}
-              className="mr-2"
-            />
+            <Link href="/">
+              <Image
+                src="/favicon.ico"
+                alt="Logo"
+                width={70}
+                height={70}
+                className="mr-2"
+              />
+            </Link>
             Shield Stack
           </div>
           <div className="relative z-20 mt-auto">
