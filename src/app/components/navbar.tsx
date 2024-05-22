@@ -1,8 +1,14 @@
+"use client";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 export default function Navbar({ session }: any) {
+  const pathname = usePathname();
+  if (pathname === "/login") {
+    return null;
+  }
   return (
-    <nav className="border-gray-200 bg-white dark:bg-gray-900">
+    <nav className="border-gray-200 bg-white dark:bg-black">
       <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
         <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
           <img src="/favicon.ico" className="h-8" alt="Flowbite Logo" />

@@ -21,6 +21,7 @@ export const metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
+
 export default async function RootLayout({
   children,
 }: {
@@ -43,7 +44,7 @@ export default async function RootLayout({
         <Navbar session={session} />
         <HeroHighlight
           containerClassName="hero-highlight-container"
-          className="hero-highlight-content"
+          className="hero-highlight-content "
         >
           {children}
         </HeroHighlight>
