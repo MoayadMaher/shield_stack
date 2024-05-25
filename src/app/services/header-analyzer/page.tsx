@@ -41,6 +41,7 @@ export default function AnalyzePage() {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      setData("");
       document.getElementById("drawer-trigger")?.click();
       const fetchedData = await analyzer(url);
       setData(fetchedData);
@@ -67,14 +68,14 @@ export default function AnalyzePage() {
             Open Drawer
           </Button>
         </DrawerTrigger>
-        <DrawerContent>
+        <DrawerContent className="p-2">
           <DrawerHeader>
             <DrawerTitle>
               HTTP Header Analysis Results for <a href={url}>{url}</a>
             </DrawerTitle>
             <DrawerClose />
           </DrawerHeader>
-          <div className="flex justify-center p-8 text-black dark:text-white">
+          <div className="flex justify-center p-3 text-black dark:text-white">
             {data ? (
               <div>
                 <div className="mt-8 grid grid-cols-2 gap-8">
