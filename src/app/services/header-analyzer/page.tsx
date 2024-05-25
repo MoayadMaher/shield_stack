@@ -2,51 +2,184 @@
 
 import { useState } from "react";
 import analyzer from "./api/analyzer";
+import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Vortex } from "@/components/ui/vortex";
 
 export default function AnalyzePage() {
   const [url, setUrl] = useState<string>("");
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<any>(null);
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  const placeholders = [
+    "Enter a URL to analyze",
+    "What's the missing headers?",
+    "Are you sure you're using the right headers?",
+    "How about the security headers?",
+    "Do you have SSL enabled?",
+  ];
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUrl(e.target.value);
+  };
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
+      document.getElementById("drawer-trigger")?.click();
       const fetchedData = await analyzer(url);
       setData(fetchedData);
     } catch (error) {
       console.error("Failed to fetch data:", error);
     }
-  }
+  };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center  text-white">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-        <h1 className="text-5xl font-extrabold tracking-tight text-white ">
-          Header Analyzer Services
-        </h1>
-        <div className="p-3">
-          <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              className="m-1 rounded-md border border-gray-300 bg-white p-1 text-black"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-            />
-            <button
-              type="submit"
-              className="rounded-md bg-blue-500 p-1.5 text-white hover:bg-blue-600"
-            >
-              Submit
-            </button>
-          </form>
-          <div>
+    <>
+      <h1 className="text-dark flex justify-center p-12 text-6xl font-bold dark:text-white">
+        HTTP Header Analyzer
+      </h1>
+      <div className="w-full">
+        <PlaceholdersAndVanishInput
+          placeholders={placeholders}
+          onChange={handleChange}
+          onSubmit={onSubmit}
+        />
+      </div>
+      <Drawer>
+        <DrawerTrigger asChild>
+          <Button id="drawer-trigger" className="hidden">
+            Open Drawer
+          </Button>
+        </DrawerTrigger>
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>
+              HTTP Header Analysis Results for <a href={url}>{url}</a>
+            </DrawerTitle>
+            <DrawerClose />
+          </DrawerHeader>
+          <div className="flex justify-center p-8 text-black dark:text-white">
             {data ? (
-              <pre>{JSON.stringify(data, null, 2)}</pre>
+              <div>
+                <div className="mt-8 grid grid-cols-2 gap-8">
+                  <div>
+                    <h3 className="mb-2 text-xl font-semibold ">
+                      Missing HTTP Security Headers
+                    </h3>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Header</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {data["[1. Missing HTTP Security Headers]"].map(
+                          (header: string, index: number) => (
+                            <TableRow key={index}>
+                              <TableCell>{header}</TableCell>
+                            </TableRow>
+                          ),
+                        )}
+                      </TableBody>
+                    </Table>
+
+                    <h3 className="mb-2 mt-8 text-xl font-semibold ">
+                      Empty HTTP Response Headers Values
+                    </h3>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Header Value</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell>
+                            {data["[4. Empty HTTP Response Headers Values]"][0]}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </div>
+
+                  <div>
+                    <h3 className="mb-2 text-xl font-semibold ">
+                      Fingerprint HTTP Response Headers
+                    </h3>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Header</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {data["[2. Fingerprint HTTP Response Headers]"].map(
+                          (header: string, index: number) => (
+                            <TableRow key={index}>
+                              <TableCell>{header}</TableCell>
+                            </TableRow>
+                          ),
+                        )}
+                      </TableBody>
+                    </Table>
+
+                    <h3 className="mb-2 mt-8 text-xl font-semibold ">
+                      Deprecated HTTP Response Headers/Protocols and Insecure
+                      Values
+                    </h3>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Header/Protocol</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {data[
+                          "[3. Deprecated HTTP Response Headers/Protocols and Insecure Values]"
+                        ].map((header: string, index: number) => (
+                          <TableRow key={index}>
+                            <TableCell>{header}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </div>
+              </div>
             ) : (
-              "No data fetched yet."
+              <div className="mx-auto h-[30rem] w-[calc(100%-4rem)] overflow-hidden rounded-md">
+                <Vortex
+                  backgroundColor="black"
+                  className="flex h-full w-full flex-col items-center justify-center px-2 py-4 md:px-10"
+                >
+                  <h2 className="text-center text-2xl font-bold text-white md:text-6xl">
+                    Your header analysis is in progress
+                  </h2>
+                  <p className="mt-6 max-w-xl text-center text-sm text-white md:text-2xl">
+                    This may take a few seconds
+                  </p>
+                </Vortex>
+              </div>
             )}
           </div>
-        </div>
-      </div>
-    </main>
+        </DrawerContent>
+      </Drawer>
+    </>
   );
 }

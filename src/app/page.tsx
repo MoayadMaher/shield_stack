@@ -48,8 +48,10 @@ export default function HomePage() {
                 Explore Features
               </Button>
             </Link>
-            <Link href="/login">
-              <Button className="bg-gray-800 text-white">Login</Button>
+            <Link href="/test">
+              <Button className="bg-gray-800 text-white">
+                What is unber dev
+              </Button>
             </Link>
           </div>
         </motion.h1>
@@ -144,4 +146,3 @@ export default function HomePage() {
     </div>
   );
 }
-
