@@ -101,10 +101,6 @@ export default function HomePage() {
                 and open-source
               </Badge>
             </CardTitle>
-            <div>
-              <span className="text-3xl font-bold">$0</span>
-              <span className="text-muted-foreground"> /month</span>
-            </div>
 
             <CardDescription>Just enjoy the journey</CardDescription>
           </CardHeader>

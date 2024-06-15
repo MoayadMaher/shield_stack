@@ -8,6 +8,16 @@ await import("./src/env.js");
 const config = {
     eslint: {
         ignoreDuringBuilds: true,
+    },
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'res.cloudinary.com',
+                port: '',
+                pathname: '/damcjyy3v/**',
+            },
+        ],
     }
 };
 

@@ -1,49 +1,28 @@
 "use client";
 
-import { useState } from "react";
-import HideForm from "../../components/hideForm";
+import HideForm from "@/app/components/hideForm";
 import ExtractForm from "@/app/components/extractForm";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Page() {
-  const [oppreation, setOperation] = useState<string>("hide");
-
-  const Form = () => {
-    if (oppreation === "hide") {
-      return <HideForm />;
-    } else {
-      return <ExtractForm />;
-    }
-  };
-
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center  text-white">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-        <h1 className="text-5xl font-extrabold tracking-tight text-white ">
+    <main className="flex min-h-screen flex-col items-center justify-center text-white">
+      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
+        <h1 className="text-5xl font-extrabold tracking-tight text-white">
           Steganography Service
         </h1>
-        <div className="p-3">
-          <label htmlFor="hide">Hide</label>
-          <input
-            type="radio"
-            id="hide"
-            name="operation"
-            value="hide"
-            onChange={(e) => setOperation(e.target.value)}
-            className="mL-2"
-            defaultChecked
-          />
-          <label htmlFor="extract">Extract</label>
-          <input
-            type="radio"
-            id="extract"
-            name="operation"
-            value="extract"
-            onChange={(e) => setOperation(e.target.value)}
-            className="ml-2"
-          />
-        </div>
-        {Form()}
-        <div className="container flex flex-col items-center justify-center  "></div>
+        <Tabs defaultValue="Hide" className="w-full">
+          <TabsList className="grid w-full grid-cols-2 dark:bg-black">
+            <TabsTrigger value="Hide">Hide</TabsTrigger>
+            <TabsTrigger value="Extract">Extract</TabsTrigger>
+          </TabsList>
+          <TabsContent value="Hide">
+            <HideForm />
+          </TabsContent>
+          <TabsContent value="Extract">
+            <ExtractForm />
+          </TabsContent>
+        </Tabs>
       </div>
     </main>
   );
