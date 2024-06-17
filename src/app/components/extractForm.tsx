@@ -33,7 +33,6 @@ export default function HideForm() {
     setLoadingState(true);
     try {
       const extractedText = await extractTextFromImage(url);
-      console.log("extractedText", extractedText);
       setResult(extractedText.extract_text);
     } catch (error) {
       alert("Failed to process the image. Please try again.");

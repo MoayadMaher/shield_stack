@@ -12,7 +12,9 @@ export async function middleware(req: NextRequest) {
 
   if (
     !token &&
-    (pathname.startsWith("/services") || pathname.startsWith("/account"))
+    (pathname.startsWith("/services") ||
+      pathname.startsWith("/account") ||
+      pathname.startsWith("/history"))
   ) {
     // const url = req.nextUrl.clone();
     return NextResponse.redirect(`${NEXT_URL}/login`);

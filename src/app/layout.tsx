@@ -41,6 +41,7 @@ export default async function RootLayout({
         )}
       >
         <Navbar session={session} />
+
         <HeroHighlight
           containerClassName="hero-highlight-container"
           className="hero-highlight-content "

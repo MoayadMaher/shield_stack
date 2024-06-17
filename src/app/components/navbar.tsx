@@ -1,7 +1,18 @@
-// Navbar.tsx
 "use client";
-import { usePathname } from "next/navigation";
+
+import { JSX, SVGProps } from "react";
 import Link from "next/link";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
 
 export default function Navbar({ session }: any) {
   const pathname = usePathname();
@@ -9,79 +20,184 @@ export default function Navbar({ session }: any) {
     return null;
   }
   return (
-    <nav className="border-gray-200 bg-white dark:bg-black">
-      <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
-        <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-          <img src="/favicon.ico" className="h-8" alt="Flowbite Logo" />
-          <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">
-            Shield Stack
-          </span>
-        </a>
-        <button
-          data-collapse-toggle="navbar-default"
-          type="button"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 md:hidden dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-          aria-controls="navbar-default"
-          aria-expanded="false"
-        >
-          <span className="sr-only">Open main menu</span>
-          <svg
-            className="h-5 w-5"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 17 14"
+    <header className="w-full bg-gray-950 text-gray-50">
+      <div className="container flex h-16 items-center justify-between px-4 md:px-6">
+        <Link href="/" className="flex items-center gap-2" prefetch={false}>
+          <img
+            src="/Shield_Stack_Logo.png"
+            className="h-12 w-12"
+            alt="Shield Stack Logo"
+          />
+          <span className="text-xl font-semibold">Shield Stack</span>
+        </Link>
+        <nav className="hidden items-center gap-6 md:flex">
+          <Link
+            href="/"
+            className="text-m font-medium transition-colors hover:text-gray-300"
+            prefetch={false}
           >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M1 1h15M1 7h15M1 13h15"
-            />
-          </svg>
-        </button>
-        <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-          <ul className="mt-4 flex flex-col rounded-lg border border-gray-100 bg-gray-50 p-4 font-medium md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-white md:p-0 rtl:space-x-reverse dark:border-gray-700 dark:bg-gray-800 md:dark:bg-gray-900">
-            <li>
+            Home
+          </Link>
+          <Link
+            href="/services"
+            className="text-m font-medium transition-colors hover:text-gray-300"
+            prefetch={false}
+          >
+            Services
+          </Link>
+          {session && (
+            <>
               <Link
-                href="/"
-                className="block rounded bg-blue-700 px-3 py-2 text-white md:bg-transparent md:p-0 md:text-blue-700 dark:text-white md:dark:text-blue-500"
-                aria-current="page"
+                href="/history"
+                className="text-m font-medium transition-colors hover:text-gray-300"
+                prefetch={false}
               >
-                Home
+                My History
               </Link>
-            </li>
-            <li>
-              <Link
-                href="/services"
-                className="block rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
-              >
-                Services
-              </Link>
-            </li>
-            {session ? (
-              <li>
-                <a
-                  href="/api/auth/signout"
-                  className="block rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
-                >
-                  Logout
-                </a>
-              </li>
-            ) : (
-              <li>
+            </>
+          )}
+        </nav>
+        {session ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src={session.user.image} />
+                  <AvatarFallback>{session.user.name}</AvatarFallback>
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" sideOffset={12}>
+              <DropdownMenuItem>
                 <Link
-                  href="/login"
-                  className="block rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent md:dark:hover:text-blue-500"
+                  href="/account"
+                  className="flex items-center gap-2"
+                  prefetch={false}
                 >
-                  Login
+                  <UserIcon className="h-4 w-4" />
+                  <span>Profile</span>
                 </Link>
-              </li>
-            )}
-          </ul>
-        </div>
+              </DropdownMenuItem>
+              {/* <DropdownMenuItem>
+                <Link
+                  href="#"
+                  className="flex items-center gap-2"
+                  prefetch={false}
+                >
+                  <SettingsIcon className="h-4 w-4" />
+                  <span>Settings</span>
+                </Link>
+              </DropdownMenuItem> */}
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <div
+                  className="flex items-center gap-2"
+                  onClick={() => signOut()}
+                >
+                  <LogOutIcon className="h-4 w-4" />
+                  <span>Sign Out</span>
+                </div>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <div className="flex items-center gap-4">
+            <Link
+              href="/login"
+              className="bg-primary-500 hover:bg-primary-600 text-m rounded-md px-4 py-2 font-medium text-white transition-colors"
+              prefetch={false}
+            >
+              Login
+            </Link>
+          </div>
+        )}
       </div>
-    </nav>
+    </header>
   );
 }
+
+function LogOutIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+      <polyline points="16 17 21 12 16 7" />
+      <line x1="21" x2="9" y1="12" y2="12" />
+    </svg>
+  );
+}
+
+function SettingsIcon(
+  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>,
+) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  );
+}
+
+function UserIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </svg>
+  );
+}
+
+const backup = (session: any) => {
+  return session ? (
+    <div className="flex items-center gap-4">
+      <Link
+        href="#"
+        className="text-sm font-medium transition-colors hover:text-gray-300"
+        prefetch={false}
+      >
+        Login
+      </Link>
+      <Link
+        href="#"
+        className="bg-primary-500 hover:bg-primary-600 rounded-md px-4 py-2 text-sm font-medium text-white transition-colors"
+        prefetch={false}
+      >
+        Register
+      </Link>
+    </div>
+  ) : (
+    <div></div>
+  );
+};
