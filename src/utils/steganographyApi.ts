@@ -1,7 +1,7 @@
 export default async function hideTextInImage(imageUrl: string, text: string) {
   try {
     const response = await fetch(
-      `https://steganographyapi-production.up.railway.app/hide-text/`,
+      `https://clever-insight-production.up.railway.app/hide-text/`,
       {
         method: "POST",
         headers: {
@@ -26,7 +26,7 @@ export default async function hideTextInImage(imageUrl: string, text: string) {
 export async function extractTextFromImage(imageUrl: string) {
   try {
     const response = await fetch(
-      `https://steganographyapi-production.up.railway.app/extract-text/`,
+      `https://clever-insight-production.up.railway.app/extract-text/`,
       {
         method: "POST",
         headers: {

@@ -95,7 +95,7 @@ export default function HideForm() {
                   File
                 </label>
                 {file ? (
-                  <div className="relative mx-auto mt-2 w-full max-w-lg">
+                  <div className="relative mx-auto mt-2 flex w-full max-w-lg justify-center">
                     <img src={URL.createObjectURL(file)} alt="uploaded file" />
                     <button
                       type="button"
@@ -140,7 +140,7 @@ export default function HideForm() {
                 )}
               </div>
             </div>
-            <div className="space-y-1">
+            <div className="mt-4 space-y-1">
               <Label htmlFor="text-to-hide">Text to be hidden</Label>
               <Textarea
                 id="text-to-hide"
