@@ -23,7 +23,7 @@ export default function Page() {
   );
 }
 
-export const projects = [
+const projects = [
   {
     title: "Nmap",
     description:
