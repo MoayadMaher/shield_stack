@@ -45,14 +45,14 @@ export default function HomePage() {
           <div className="mt-8 flex gap-4">
             <Link href="/services">
               <Button className="bg-white text-black hover:bg-indigo-200">
-                Explore Features
+                Start Testing Now
               </Button>
             </Link>
-            <Link href="/test">
+            {/* <Link href="/test">
               <Button className="bg-gray-800 text-white">
                 What is under dev
               </Button>
-            </Link>
+            </Link> */}
           </div>
         </motion.h1>
       </div>

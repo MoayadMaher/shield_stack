@@ -14,7 +14,6 @@ import {
 
 import { Button } from "@/components/ui/button";
 import Loading from "@/app/components/loading";
-import NmapResults from "@/app/components/nmapResults";
 import WhoisResults from "@/app/components/whoisResult";
 
 export default function Page() {

@@ -12,8 +12,9 @@ const inter = Inter({
 });
 import { cn } from "@/lib/utils";
 
-import { Inter as fontSans } from "next/font/google";
+
 import { HeroHighlight } from "@/app/components/ui/hero-highlight";
+import { Toaster } from "./components/ui/toaster";
 
 export const metadata = {
   title: "Shield Stack",
@@ -47,6 +48,7 @@ export default async function RootLayout({
           className="hero-highlight-content "
         >
           {children}
+          <Toaster />
         </HeroHighlight>
         <SpeedInsights />
       </body>

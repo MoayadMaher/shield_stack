@@ -14,6 +14,7 @@ import { Label } from "@radix-ui/react-label";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { DirectionAwareHover } from "./ui/direction-aware-hover";
+import { useToast } from "./ui/use-toast";
 
 export default function HideForm() {
   const [file, setFile] = useState<File | null>(null);
@@ -21,6 +22,8 @@ export default function HideForm() {
   const [result, setResult] = useState<string>("");
   const { uploadImage, url, isLoading, error } = useUploadImage();
   const formRef = useRef<HTMLFormElement>(null);
+
+  const { toast } = useToast();
 
   const loadingStates = [
     { text: "Starting to hide the text in your image ..." },
@@ -35,7 +38,11 @@ export default function HideForm() {
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!file || !url) {
-      alert("complete the form");
+      toast({
+        variant: "destructive",
+        title: "complete the form",
+        description: "Please upload an image and type a message.",
+      });
       return;
     }
     const text = (e.target as HTMLFormElement)["text-to-hide"].value;
@@ -44,7 +51,11 @@ export default function HideForm() {
       const stegoImageUrl = await hideTextInImage(url, text);
       setResult(stegoImageUrl);
     } catch (error) {
-      alert("Failed to process the image. Please try again.");
+      toast({
+        variant: "destructive",
+        title: "Failed to process the image. Please try again.",
+        description: "Please try again.",
+      });
       console.error("Error during file processing", error);
     } finally {
       setLoadingState(false);
@@ -53,9 +64,15 @@ export default function HideForm() {
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
+    if (file && file.type === "image/png") {
       setFile(file);
       uploadImage(file);
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Invalid file format",
+        description: "Please upload a PNG file.",
+      });
     }
   };
 

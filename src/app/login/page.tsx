@@ -25,14 +25,14 @@ export default function AuthenticationPage() {
           Login
         </Link>
         <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
-          <div className="absolute inset-0 bg-black" />
+          <div className="absolute inset-0 bg-zinc-900" />
           <div className="relative z-20 flex items-center text-3xl font-medium">
             <Link href="/">
               <Image
-                src="/favicon.ico"
+                src="/Shield_Stack_Logo.png"
                 alt="Logo"
-                width={70}
-                height={70}
+                width={90}
+                height={90}
                 className="mr-2"
               />
             </Link>
@@ -47,7 +47,7 @@ export default function AuthenticationPage() {
             </blockquote>
           </div>
         </div>
-        <div className="lg:p-8">
+        <div className="lg:p-8 ">
           <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
             <div className="flex flex-col space-y-2 text-center">
               <h1 className="text-2xl font-semibold tracking-tight text-black dark:text-white">
@@ -58,7 +58,7 @@ export default function AuthenticationPage() {
               </p>
             </div>
             <UserAuthForm />
-            <p className="px-8 text-center text-sm text-muted-foreground">
+            <p className="px-8 text-center text-sm text-muted-foreground ">
               Let's do some magic!
             </p>
           </div>

@@ -11,6 +11,7 @@ import {
 import { MultiStepLoader } from "./ui/multi-step-loader";
 import { Button } from "./ui/button";
 import { TextGenerateEffect } from "./ui/text-generate-effect";
+import { useToast } from "./ui/use-toast";
 
 export default function HideForm() {
   const [file, setFile] = useState<File | null>(null);
@@ -18,6 +19,8 @@ export default function HideForm() {
   const [result, setResult] = useState<string>("");
   const { uploadImage, url, isLoading, error } = useUploadImage();
   const formRef = useRef<HTMLFormElement>(null);
+
+  const { toast } = useToast();
 
   const loadingStates = [
     { text: "Starting to extract the text from your image ..." },
@@ -27,15 +30,33 @@ export default function HideForm() {
   const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!url) {
-      alert("Please upload an image file again.");
+      toast({
+        variant: "destructive",
+        title: "No image uploaded!",
+        description: "Please upload an image to extract the text.",
+      });
       return;
     }
     setLoadingState(true);
     try {
-      const extractedText = await extractTextFromImage(url);
-      setResult(extractedText.extract_text);
+      const res = await extractTextFromImage(url);
+      if (res && !res.extract_text) {
+        setFile(null);
+        setLoadingState(false);
+        toast({
+          variant: "destructive",
+          title: "No text found in the image!",
+          description: "Please make sure the image has a hidden message.",
+        });
+        return;
+      }
+      setResult(res.extract_text);
     } catch (error) {
-      alert("Failed to process the image. Please try again.");
+      toast({
+        variant: "destructive",
+        title: "Failed to process the image. Please try again.",
+        description: "Please try again.",
+      });
       console.error("Error during file processing", error);
     } finally {
       setLoadingState(false);
@@ -44,9 +65,15 @@ export default function HideForm() {
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
+    if (file && file.type === "image/png") {
       setFile(file);
       uploadImage(file);
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Invalid file type!",
+        description: "Please upload a PNG file.",
+      });
     }
   };
 
