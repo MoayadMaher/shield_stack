@@ -4,12 +4,12 @@ async function apiFetch(params: string) {
     const response = await fetch(fullUrl);
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.error || "Unknown error occurred");
+      return { error: `API request failed with status ${response.status}` };
     }
     return await response.json();
   } catch (error: any) {
     console.error("API error:", error.message);
-    return { error: error.message };
+    return { error: "API request failed" };
   }
 }
 

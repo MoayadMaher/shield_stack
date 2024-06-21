@@ -15,10 +15,13 @@ import {
 import { Button } from "@/components/ui/button";
 import Loading from "@/app/components/loading";
 import NmapResults from "@/app/components/nmapResults";
+import { useToast } from "@/app/components/ui/use-toast";
 
 export default function Page() {
   const [url, setUrl] = useState<string>("");
   const [data, setData] = useState<any>(null);
+
+  const { toast } = useToast();
 
   const placeholders = [
     "Enter a URL to scan the open ports",
@@ -36,6 +39,16 @@ export default function Page() {
       setData("");
       document.getElementById("drawer-trigger")?.click();
       const fetchedData = await scan(url, "nmap");
+      if (fetchedData.error) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: fetchedData.error,
+        });
+        document.getElementById("drawer-trigger")?.click();
+        return;
+      }
+
       setData(fetchedData);
     } catch (error) {
       console.error("Failed to fetch data:", error);
