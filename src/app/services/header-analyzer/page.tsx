@@ -20,12 +20,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Vortex } from "@/components/ui/vortex";
 import Loading from "@/app/components/loading";
+import { useToast } from "@/app/components/ui/use-toast";
 
 export default function AnalyzePage() {
   const [url, setUrl] = useState<string>("");
   const [data, setData] = useState<any>(null);
+
+  const { toast } = useToast();
 
   const placeholders = [
     "Enter a URL to analyze",
@@ -41,10 +43,20 @@ export default function AnalyzePage() {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     try {
       setData("");
       document.getElementById("drawer-trigger")?.click();
       const fetchedData = await analyzer(url);
+      if (fetchedData.error) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: fetchedData.error,
+        });
+        document.getElementById("drawer-trigger")?.click();
+        return;
+      }
       setData(fetchedData);
     } catch (error) {
       console.error("Failed to fetch data:", error);

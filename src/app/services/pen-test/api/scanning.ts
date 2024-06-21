@@ -19,8 +19,6 @@ export default async function scan(target: string, scanType: string) {
       return await apiFetch(`/nmap/scan?url=${target}`);
     case "whois":
       return await apiFetch(`/whois/lookup?url=${target}`);
-    case "dirserch":
-      return await apiFetch(`/dirsearch/start?url=${target}`);
     default:
       throw new Error(`Invalid scan type: ${scanType}`);
   }

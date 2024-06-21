@@ -1,3 +1,5 @@
+import { error } from "console";
+
 export default async function analyzer(url: string) {
   const apiBaseURL =
     "https://humble-headers-analyzer-production.up.railway.app/";
@@ -7,7 +9,9 @@ export default async function analyzer(url: string) {
 
     if (!response.ok) {
       console.error(`API request failed with status ${response.status}`);
-      return null;
+      return {
+        error: `API request failed with status ${response.status}`,
+      };
     }
 
     try {
@@ -15,10 +19,14 @@ export default async function analyzer(url: string) {
       return data;
     } catch (jsonError) {
       console.error("Error parsing JSON:", jsonError);
-      return null;
+      return {
+        error: "failed to parse JSON",
+      };
     }
-  } catch (networkError) {
-    console.error("Network error:", networkError);
-    return null;
+  } catch (err) {
+    console.error(err);
+    return {
+      error: "failed to fetch data",
+    };
   }
 }
