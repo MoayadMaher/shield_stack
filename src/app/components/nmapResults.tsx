@@ -1,12 +1,3 @@
-import React from "react";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
 import {
   Table,
   TableBody,
@@ -15,21 +6,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
 
 export default function NmapResults({ data }: { data: any }) {
   return (
-    <div className=" p-3 text-black dark:text-white">
-      <div className="p-4">
-        <h2 className="text-xl font-semibold">Host Information</h2>
-        <p>
-          <strong>Address:</strong> {data.hostInfo.address}
-        </p>
-        <p>
-          <strong>Hostnames:</strong> {data.hostInfo.hostnames.join(", ")}
-        </p>
-      </div>
-      <div>
+    <div className=" p-3 text-black dark:text-white ">
+      <h2 className="text-2xl font-semibold">Host Information</h2>
+      <p className="ml-4 mt-4 text-xl">
+        <strong>Address:</strong> {data.hostInfo.address}
+      </p>
+      <p className="ml-4 mt-1 text-xl">
+        <strong>Hostnames:</strong> {data.hostInfo.hostnames.join(", ")}
+      </p>
+
+      <div className="mt-8">
         <Table>
           <TableHeader>
             <TableRow className="text-2xl">

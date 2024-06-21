@@ -3,19 +3,19 @@
 import { useState } from "react";
 import scan from "../api/scanning";
 import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
 
 import { Button } from "@/components/ui/button";
 import Loading from "@/app/components/loading";
 import NmapResults from "@/app/components/nmapResults";
 import { useToast } from "@/app/components/ui/use-toast";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export default function Page() {
   const [url, setUrl] = useState<string>("");
@@ -37,15 +37,16 @@ export default function Page() {
     e.preventDefault();
     try {
       setData("");
-      document.getElementById("drawer-trigger")?.click();
+      document.getElementById("modal-trigger")?.click();
       const fetchedData = await scan(url, "nmap");
+      console.log(fetchedData);
       if (fetchedData.error) {
         toast({
           variant: "destructive",
           title: "Error",
           description: fetchedData.error,
         });
-        document.getElementById("drawer-trigger")?.click();
+        document.getElementById("modal-trigger")?.click();
         return;
       }
 
@@ -73,33 +74,32 @@ export default function Page() {
                 onSubmit={onSubmit}
               />
             </div>
-            <Drawer>
-              <DrawerTrigger asChild>
-                <Button id="drawer-trigger" className="hidden">
-                  Open Drawer
+
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline" id="modal-trigger" className="hidden">
+                  Edit Profile
                 </Button>
-              </DrawerTrigger>
-              <DrawerContent className="p-3">
+              </DialogTrigger>
+              <DialogContent>
                 <div className="flex flex-col gap-8">
                   {data ? (
                     data.error ? (
                       <>
-                        <DrawerHeader className="flex justify-center p-11">
-                          <DrawerTitle className="text-2xl">
+                        <DialogHeader className="mt-1 flex justify-center">
+                          <DialogTitle className="text-2xl">
                             Are sure about the target you entered try agine
                             plase?
-                          </DrawerTitle>
-                          <DrawerClose />
-                        </DrawerHeader>
+                          </DialogTitle>
+                        </DialogHeader>
                       </>
                     ) : (
                       <>
-                        <DrawerHeader>
-                          <DrawerTitle className="text-2xl">
+                        <DialogHeader>
+                          <DialogTitle className="text-2xl text-white">
                             Nmap Scan Results
-                          </DrawerTitle>
-                          <DrawerClose />
-                        </DrawerHeader>
+                          </DialogTitle>
+                        </DialogHeader>
                         <NmapResults data={data} />
                       </>
                     )
@@ -107,8 +107,8 @@ export default function Page() {
                     <Loading process="nmap scan" />
                   )}
                 </div>
-              </DrawerContent>
-            </Drawer>
+              </DialogContent>
+            </Dialog>
           </div>
         </main>
       </div>

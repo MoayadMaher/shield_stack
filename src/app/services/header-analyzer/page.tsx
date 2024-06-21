@@ -4,14 +4,6 @@ import { useState } from "react";
 import analyzer from "./api/analyzer";
 import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
 import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
-import {
   Table,
   TableBody,
   TableCell,
@@ -19,6 +11,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 import { Button } from "@/components/ui/button";
 import Loading from "@/app/components/loading";
 import { useToast } from "@/app/components/ui/use-toast";
@@ -46,7 +46,7 @@ export default function AnalyzePage() {
 
     try {
       setData("");
-      document.getElementById("drawer-trigger")?.click();
+      document.getElementById("modal-trigger")?.click();
       const fetchedData = await analyzer(url);
       if (fetchedData.error) {
         toast({
@@ -54,7 +54,7 @@ export default function AnalyzePage() {
           title: "Error",
           description: fetchedData.error,
         });
-        document.getElementById("drawer-trigger")?.click();
+        document.getElementById("modal-trigger")?.click();
         return;
       }
       setData(fetchedData);
@@ -77,114 +77,130 @@ export default function AnalyzePage() {
           />
         </div>
       </div>
-      <Drawer>
-        <DrawerTrigger asChild>
-          <Button id="drawer-trigger" className="hidden">
-            Open Drawer
+
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button variant="outline" id="modal-trigger" className="hidden">
+            Edit Profile
           </Button>
-        </DrawerTrigger>
-        <DrawerContent className="p-2">
-          <DrawerHeader>
-            <DrawerTitle>
-              HTTP Header Analysis Results for{" "}
-              <a href={`https://www.${url}`}>{url}</a>
-            </DrawerTitle>
-            <DrawerClose />
-          </DrawerHeader>
-          <div className="flex justify-center p-3 text-black dark:text-white">
+        </DialogTrigger>
+        <DialogContent>
+          <div className="flex flex-col gap-8">
             {data ? (
-              <div>
-                <div className="mt-8 grid grid-cols-2 gap-8">
-                  <div>
-                    <h3 className="mb-2 text-xl font-semibold ">
-                      Missing HTTP Security Headers
-                    </h3>
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Header</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {data["[1. Missing HTTP Security Headers]"].map(
-                          (header: string, index: number) => (
-                            <TableRow key={index}>
-                              <TableCell>{header}</TableCell>
+              data.error ? (
+                <>
+                  <DialogHeader className="mt-1 flex h-52 justify-center">
+                    <DialogTitle className="text-2xl text-white">
+                      Are sure about the target you entered try agine plase?
+                    </DialogTitle>
+                  </DialogHeader>
+                </>
+              ) : (
+                <>
+                  <DialogHeader>
+                    <DialogTitle className="text-2xl text-white">
+                      HTTP Header Analysis Results for{" "}
+                      <a href={`https://www.${url}`}>{url}</a>
+                    </DialogTitle>
+                  </DialogHeader>
+                  <div className="text-white">
+                    <div className="mt-8 grid grid-cols-2 gap-8">
+                      <div>
+                        <h3 className="mb-2 text-xl font-semibold ">
+                          Missing HTTP Security Headers
+                        </h3>
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Header</TableHead>
                             </TableRow>
-                          ),
-                        )}
-                      </TableBody>
-                    </Table>
+                          </TableHeader>
+                          <TableBody>
+                            {data["[1. Missing HTTP Security Headers]"].map(
+                              (header: string, index: number) => (
+                                <TableRow key={index}>
+                                  <TableCell>{header}</TableCell>
+                                </TableRow>
+                              ),
+                            )}
+                          </TableBody>
+                        </Table>
 
-                    <h3 className="mb-2 mt-8 text-xl font-semibold ">
-                      Empty HTTP Response Headers Values
-                    </h3>
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Header Value</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        <TableRow>
-                          <TableCell>
-                            {data["[4. Empty HTTP Response Headers Values]"][0]}
-                          </TableCell>
-                        </TableRow>
-                      </TableBody>
-                    </Table>
-                  </div>
-
-                  <div>
-                    <h3 className="mb-2 text-xl font-semibold ">
-                      Fingerprint HTTP Response Headers
-                    </h3>
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Header</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {data["[2. Fingerprint HTTP Response Headers]"].map(
-                          (header: string, index: number) => (
-                            <TableRow key={index}>
-                              <TableCell>{header}</TableCell>
+                        <h3 className="mb-2 mt-8 text-xl font-semibold ">
+                          Empty HTTP Response Headers Values
+                        </h3>
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Header Value</TableHead>
                             </TableRow>
-                          ),
-                        )}
-                      </TableBody>
-                    </Table>
+                          </TableHeader>
+                          <TableBody>
+                            <TableRow>
+                              <TableCell>
+                                {
+                                  data[
+                                    "[4. Empty HTTP Response Headers Values]"
+                                  ][0]
+                                }
+                              </TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </div>
 
-                    <h3 className="mb-2 mt-8 text-xl font-semibold ">
-                      Deprecated HTTP Response Headers/Protocols and Insecure
-                      Values
-                    </h3>
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Header/Protocol</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {data[
-                          "[3. Deprecated HTTP Response Headers/Protocols and Insecure Values]"
-                        ].map((header: string, index: number) => (
-                          <TableRow key={index}>
-                            <TableCell>{header}</TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
+                      <div>
+                        <h3 className="mb-2 text-xl font-semibold ">
+                          Fingerprint HTTP Response Headers
+                        </h3>
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Header</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {data["[2. Fingerprint HTTP Response Headers]"].map(
+                              (header: string, index: number) => (
+                                <TableRow key={index}>
+                                  <TableCell>{header}</TableCell>
+                                </TableRow>
+                              ),
+                            )}
+                          </TableBody>
+                        </Table>
+
+                        <h3 className="mb-2 mt-8 text-xl font-semibold ">
+                          Deprecated HTTP Response Headers/Protocols and
+                          Insecure Values
+                        </h3>
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Header/Protocol</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {data[
+                              "[3. Deprecated HTTP Response Headers/Protocols and Insecure Values]"
+                            ].map((header: string, index: number) => (
+                              <TableRow key={index}>
+                                <TableCell>{header}</TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
+                </>
+              )
             ) : (
               <Loading process="header analysis" />
             )}
           </div>
-        </DrawerContent>
-      </Drawer>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

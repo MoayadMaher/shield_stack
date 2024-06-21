@@ -3,20 +3,18 @@ import { Separator } from "@/components/ui/separator";
 
 export default function WhoisResults({ data }: { data: any }) {
   return (
-    <ScrollArea className="h-80 w-full rounded-md border">
-      <div className="p-4">
-        <h4 className="mb-4 text-sm font-medium leading-none">
-          Domain information
-        </h4>
-        {Object.entries(data).map(([key, value]: any) => (
-          <>
-            <div key={key} className="text-sm">
-              {key}: {value}
-            </div>
-            <Separator className="my-2" />
-          </>
-        ))}
-      </div>
-    </ScrollArea>
+    <div className="max-h-96 overflow-auto p-4 text-lg text-white">
+      <h4 className="mb-4 text-2xl font-medium leading-none">
+        Domain information
+      </h4>
+      {Object.entries(data).map(([key, value]: any) => (
+        <>
+          <div key={key}>
+            {key}: {value}
+          </div>
+          <Separator className="my-2" />
+        </>
+      ))}
+    </div>
   );
 }

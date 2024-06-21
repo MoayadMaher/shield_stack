@@ -12,7 +12,6 @@ const inter = Inter({
 });
 import { cn } from "@/lib/utils";
 
-
 import { HeroHighlight } from "@/app/components/ui/hero-highlight";
 import { Toaster } from "./components/ui/toaster";
 
@@ -45,7 +44,7 @@ export default async function RootLayout({
 
         <HeroHighlight
           containerClassName="hero-highlight-container"
-          className="hero-highlight-content "
+          className="hero-highlight-content"
         >
           {children}
           <Toaster />
