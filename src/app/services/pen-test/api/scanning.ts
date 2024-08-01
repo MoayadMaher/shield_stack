@@ -1,6 +1,6 @@
 async function apiFetch(params: string) {
   try {
-    const fullUrl = `https://moayad-pen-test-api-production.up.railway.app/${params}`;
+    const fullUrl = `https://moayad-pen-test-api-production.up.railway.app${params}`;
     const response = await fetch(fullUrl);
     if (!response.ok) {
       const errorData = await response.json();
