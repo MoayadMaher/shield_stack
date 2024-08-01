@@ -1,7 +1,9 @@
+import { STEGO_API } from "@/config/*";
+
 export default async function hideTextInImage(imageUrl: string, text: string) {
   try {
     const response = await fetch(
-      `https://clever-insight-production.up.railway.app/hide-text/`,
+      `${STEGO_API}/hide-text/`,
       {
         method: "POST",
         headers: {
@@ -26,7 +28,7 @@ export default async function hideTextInImage(imageUrl: string, text: string) {
 export async function extractTextFromImage(imageUrl: string) {
   try {
     const response = await fetch(
-      `https://clever-insight-production.up.railway.app/extract-text/`,
+      `${STEGO_API}/extract-text/`,
       {
         method: "POST",
         headers: {

@@ -1,11 +1,9 @@
-import { error } from "console";
+import { HUMB_API, } from "@/config/*";
 
 export default async function analyzer(url: string) {
-  const apiBaseURL =
-    "https://humble-headers-analyzer-production.up.railway.app/";
 
   try {
-    const response = await fetch(`${apiBaseURL}?url=${url}`);
+    const response = await fetch(`${HUMB_API}/?url=${url}`);
 
     if (!response.ok) {
       console.error(`API request failed with status ${response.status}`);
